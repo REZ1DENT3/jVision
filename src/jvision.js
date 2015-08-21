@@ -122,13 +122,27 @@ if (typeof String.prototype.trim == 'undefined') {
         };
 
         this.css = function (type, value) {
-            if (typeof value != 'undefined') {
+            if (typeof value == 'undefined') {
                 return node.style[type];
             }
             this.each(function (node) {
                 node.style[type] = value;
             });
             return this;
+        };
+
+        this.width = function () {
+            if (this.count() == 1) {
+                return this.at(0).clientWidth;
+            }
+            return null;
+        };
+
+        this.height = function () {
+            if (this.count() == 1) {
+                return this.at(0).clientHeight;
+            }
+            return null;
         };
 
         this.toggleClass = function (className) {
