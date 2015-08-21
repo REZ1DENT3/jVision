@@ -198,7 +198,7 @@ if (typeof String.prototype.trim == 'undefined') {
 
         this.major = 0;
         this.minor = 0;
-        this.maintenance = 3;
+        this.maintenance = 4;
 
         this.version = function () {
             return this.major + '.' + this.minor + '.' + this.maintenance;
