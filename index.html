@@ -16,7 +16,10 @@
 
         jVision.ready(function () {
 
-            jBody = jVision.get('body');
+            jHTML = jVision.get('html');
+            console.log([jHTML.width(), jHTML.height()]);
+
+            jBody = jHTML.find('body');
             jBody.html('<h1>Hello jVision!</h1>');
 
             jH1 = jBody.find('h1');
