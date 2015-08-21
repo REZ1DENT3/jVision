@@ -3,6 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <title></title>
+    <style>
+        .hello {
+            color: #fdf400;
+            background: #000;
+        }
+    </style>
     <script type="text/javascript" src="src/jvision.js"></script>
     <script type="text/javascript">
 
@@ -18,29 +24,37 @@
         jVision.ready(function () {
 
             jHTML = jVision.get(document);
-            console.log([jHTML.width(), jHTML.height()]);
 
             jBody = jHTML.find('body');
-            jBody.html('<h1>Hello jVision!</h1>');
+            jBody.html('<h1 id="hello-world">Hello jVision!</h1>');
 
-            jH1 = jBody.find('h1');
-            jH1.css('color', generateColor());
+            jBody.find('h1').addClass('hello');
 
+            jTemp = jBody;
             for (i = 2; i < 7; ++i) {
-                jTemp = jBody.append('<h' + i + '></h' + i + '>');
-                jTemp.find('h' + i)
-                        .css('font-size', 30 / i)
-                        .text(jVision.version())
+                jTemp = jTemp.append('<h' + i + '></h' + i + '>')
+                        .find('h' + i)
+                        .css('font-size', (50 / i) + 'px')
                         .css('color', generateColor())
+                        .text(jVision.version())
             }
 
             jBody.append('<ul></ul>');
             jUl = jBody.find('ul');
             for (i = 1; i <= 10; ++i) {
                 jUl.append('<li>' + i + '</li>');
-                jUl.find('li').last().css('color', generateColor());
+                jUl.find('li').eq(i - 1).css('color', generateColor());
             }
 
+            jH1 = jBody.find('h1').css('color', generateColor()).removeClass('hello');
+
+            console.log(jUl.find('li').first().attr('style', 'color: red'));
+
+            jH1.attr('id', null);
+
+            jH1.hide(3000);
+
+            jH1.show(4000);
         });
 
     </script>
