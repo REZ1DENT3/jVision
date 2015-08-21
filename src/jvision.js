@@ -122,10 +122,27 @@ if (typeof String.prototype.trim == 'undefined') {
         };
 
         this.css = function (type, value) {
+            if (typeof value != 'undefined') {
+                return node.style[type];
+            }
             this.each(function (node) {
                 node.style[type] = value;
             });
             return this;
+        };
+
+        this.toggleClass = function (className) {
+            this.each(function (node) {
+                node.classList.toggle(className);
+            });
+            return this;
+        };
+
+        this.hasClass = function (className) {
+            if (this.count() == 1) {
+                return this.eq(0).classList.contains(className);
+            }
+            return null;
         };
 
         this.addClass = function (className) {
