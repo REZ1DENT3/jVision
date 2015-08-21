@@ -21,6 +21,10 @@ if (typeof String.prototype.trim == 'undefined') {
             case 'object':
                 try {
                     switch (selector.toString()) {
+                        case '[object Window]':
+                        case '[object HTMLDocument]':
+                            this.treeDom = document.querySelectorAll('html');
+                            break;
                         case '[object NodeList]':
                             this.treeDom = selector;
                             break;
