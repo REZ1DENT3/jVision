@@ -110,6 +110,10 @@ if (typeof String.prototype.trim == 'undefined') {
             return null;
         };
 
+        this.append = function (html) {
+            return this.html(this.html() + html);
+        };
+
         this.outerHtml = function () {
             if (this.count() == 1) {
                 return this.at(0).outerHTML;

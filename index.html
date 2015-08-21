@@ -6,18 +6,18 @@
     <script type="text/javascript" src="src/jvision.js"></script>
     <script type="text/javascript">
         jVision.ready(function () {
-
+            jBody = jVision.get('body');
+            jBody.html('<h1>Hello jVision!</h1>');
+            jH1 = jBody.find('h1');
+            jH1.css('color', 'red');
+            jBody.append('<ul></ul>');
+            jUl = jBody.find('ul');
+            for (i = 1; i <= 10; ++i) {
+                jUl.append('<li>' + i + '</li>');
+            }
         });
     </script>
 </head>
 <body>
-    <div id="main"><span>Hello</span><p></p></div>
-    <div id="test">
-        <p>1</p>
-        <p>2</p>
-        <p>3</p>
-        <p>4</p>
-        <p>5</p>
-    </div>
 </body>
 </html>
