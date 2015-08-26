@@ -4,6 +4,20 @@ if (typeof String.prototype.trim == 'undefined') {
     };
 }
 
+if (typeof String.prototype.htmlToDom == 'undefined') {
+    String.prototype.htmlToDom = function () { // todo: crutch ....
+        var frame = document.createElement('iframe');
+        frame.style.display = 'none';
+        document.body.appendChild(frame);
+        frame.contentDocument.open();
+        frame.contentDocument.write(this);
+        frame.contentDocument.close();
+        var el = frame.contentDocument.body.firstChild;
+        document.body.removeChild(frame);
+        return el;
+    }
+}
+
 if (!window.requestAnimationFrame) {
 
     window.requestAnimationFrame = (function () {
@@ -77,7 +91,11 @@ if (!window.requestAnimationFrame) {
         };
 
         this.currentNode = function () {
-            return this.at( this.pointerTreeDom );
+            return this.at(this.pointerTreeDom);
+        };
+
+        this.cloneCurrentNode = function () {
+            return this.currentNode().cloneNode(true);
         };
 
         this.at = function (index) {
@@ -96,7 +114,7 @@ if (!window.requestAnimationFrame) {
         };
 
         this.eq = function (index) {
-            return new jVObject( this.at(index) );
+            return new jVObject(this.at(index));
         };
 
         this.first = function () {
@@ -203,9 +221,11 @@ if (!window.requestAnimationFrame) {
             return undefined;
         };
 
-        this.append = function (html) { // todo
-            if (this.count() == 1) {
-                return this.html(this.html() + html);
+        this.append = function (html) {
+            var currentNode = this.currentNode();
+            if (typeof currentNode != 'undefined') {
+                currentNode = currentNode.appendChild(html.htmlToDom());
+                return this;
             }
             return undefined;
         };
@@ -303,7 +323,6 @@ if (!window.requestAnimationFrame) {
                 list.push(node.querySelectorAll(selector));
             });
             if (list.length == 1) {
-                // todo
                 return new jVObject(list[0]);
             }
             return new jVObject(list);
