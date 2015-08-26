@@ -291,7 +291,7 @@ if (!window.requestAnimationFrame) {
 
         this.major = 0;
         this.minor = 0;
-        this.maintenance = 4;
+        this.maintenance = 5;
 
         this.version = function () {
             return this.major + '.' + this.minor + '.' + this.maintenance;
@@ -305,6 +305,7 @@ if (!window.requestAnimationFrame) {
         this.loader = function (src) {
             var script = document.createElement("script");
             script.src = src;
+            script.type = "text/javascript";
             var doc = document.head || document.getElementsByTagName("head")[0];
             doc.appendChild(script);
             return this;
