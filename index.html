@@ -21,6 +21,10 @@
             return color;
         }
 
+        window.$ = function (selector) {
+            return jVision.get(selector);
+        };
+
         jVision.ready(function () {
 
             jHTML = jVision.get(document);
@@ -32,11 +36,12 @@
 
             jTemp = jBody;
             for (i = 2; i < 7; ++i) {
-                jTemp = jTemp.append('<h' + i + '></h' + i + '>')
-                        .find('h' + i)
-                        .css('font-size', (50 / i) + 'px')
-                        .css('color', generateColor())
-                        .text(jVision.version())
+                jTemp
+                    .append('<h' + i + '></h' + i + '>')
+                    .find('h' + i)
+                    .css('font-size', (50 / i) + 'px')
+                    .css('color', generateColor())
+                    .text(jVision.version())
             }
 
             jBody.append('<ul></ul>');
@@ -48,13 +53,10 @@
 
             jH1 = jBody.find('h1').css('color', generateColor()).removeClass('hello');
 
-            console.log(jUl.find('li').first().attr('style', 'color: red'));
+            jLiFirst = $( jUl.find('li').currentNode() );
 
-            jH1.attr('id', null);
+            console.log(jLiFirst);
 
-//            jH1.hide(3000);
-//
-//            jH1.show(4000);
         });
 
     </script>
