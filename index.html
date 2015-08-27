@@ -22,15 +22,19 @@
         }
 
         window.$ = function (selector) {
-            return jVision.get(selector);
+            switch (typeof selector) {
+                case 'function':
+                    return jVision.ready(selector);
+                default:
+                    return jVision.get(selector);
+            }
         };
-        window.$ = jVision;
 
-        jVision.ready(function () {
+        $(function () {
 
-            console.info('jVision ' + $.version());
+            console.info('jVision ' + jVision.version());
 
-            var jHTML = jVision.get(document);
+            var jHTML = $(document);
 
             var jBody = jHTML.find('body');
             jBody.html('<h1 id="hello-world">Hello jVision!</h1>');
