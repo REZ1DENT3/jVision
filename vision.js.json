@@ -1,0 +1,1 @@
+{"version":{"major":0,"minor":0,"maintenance":7,"build":29},"in":"src\/","source":{"core":"jvision.js","jvobject":"jvobject.js","jvdynamic":"jvdynamic.js"},"out":"build\/","build":{"jvision.js":["core","jvobject"],"jvobject.animation.js":["jvobject","jvdynamic"]}}
