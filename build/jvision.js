@@ -35,7 +35,7 @@ if (!window.requestAnimationFrame) {
 
 var jVision = window.jVision = new (function () {
 
-    this._version = [0, 0, 7, 29];
+    this._version = [0, 0, 7, 30];
 
     this.major = function () {
         return this._version[0];
