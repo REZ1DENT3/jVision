@@ -88,14 +88,14 @@ if (!window.requestAnimationFrame) {
         };
 
         this.currentNode = function () {
-            return this.at( this.pointerTreeDom);
+            return this.get( this.pointerTreeDom);
         };
 
         this.cloneCurrentNode = function () {
             return this.currentNode().cloneNode(true);
         };
 
-        this.at = function (index) {
+        this.get = function (index) {
             if (this.count() > 0) {
                 if (typeof index != 'undefined') {
                     if (index >= 0) {
@@ -111,7 +111,7 @@ if (!window.requestAnimationFrame) {
         };
 
         this.eq = function (index) {
-            return new jVObject( this.at(index) );
+            return new jVObject( this.get(index) );
         };
 
         this.first = function () {
@@ -124,7 +124,7 @@ if (!window.requestAnimationFrame) {
 
         this.each = function (callback) {
             for (var i = 0; i < this.count(); ++i) {
-                callback(this.at(i), i, this.treeDom);
+                callback(this.get(i), i, this.treeDom);
             }
         };
 
@@ -370,7 +370,7 @@ if (!window.requestAnimationFrame) {
 
         this.major = 0;
         this.minor = 0;
-        this.maintenance = 5;
+        this.maintenance = 6;
 
         this.version = function () {
             return this.major + '.' + this.minor + '.' + this.maintenance;

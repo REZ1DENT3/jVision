@@ -24,8 +24,11 @@
         window.$ = function (selector) {
             return jVision.get(selector);
         };
+        window.$ = jVision;
 
         jVision.ready(function () {
+
+            console.info('jVision ' + $.version());
 
             var jHTML = jVision.get(document);
 
