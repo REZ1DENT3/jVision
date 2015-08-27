@@ -4,6 +4,17 @@ if (typeof String.prototype.trim == 'undefined') {
     };
 }
 
+if (typeof String.prototype.htmlToDom == 'undefined') {
+    String.prototype.htmlToDom = function () {
+        parser = new DOMParser();
+        doc = parser.parseFromString(this, "text/html");
+        if (typeof doc.body.firstChild != 'undefined') {
+            return doc.body.firstChild;
+        }
+        return undefined;
+    };
+}
+
 if (!window.requestAnimationFrame) {
 
     window.requestAnimationFrame = (function () {
@@ -28,27 +39,37 @@ if (!window.requestAnimationFrame) {
 
         this.treeDom = [];
 
+        this.pointerTreeDom = undefined;
+
         this.push = function (newDom) {
+            this.reset();
             this.treeDom.push(newDom);
         };
 
         this.setTreeDom = function (value) {
+            this.reset();
             this.treeDom = value;
+        };
+
+        this.reset = function () {
+            this.pointerTreeDom = 0;
         };
 
         switch (typeof selector) {
             case 'string':
-                this.treeDom = document.querySelectorAll(selector);
+                dom = document.querySelectorAll(selector);
+                this.setTreeDom(dom);
                 break;
             case 'object':
                 try {
                     switch (selector.toString()) {
                         case '[object Window]':
                         case '[object HTMLDocument]':
-                            this.treeDom = document.querySelectorAll('html');
+                            dom = document.querySelectorAll('html');
+                            this.setTreeDom(dom);
                             break;
                         case '[object NodeList]':
-                            this.treeDom = selector;
+                            this.setTreeDom(selector);
                             break;
                         case '[object HTMLLIElement]':
                         case '[object HTMLParagraphElement]':
@@ -66,20 +87,31 @@ if (!window.requestAnimationFrame) {
             return this.treeDom.length;
         };
 
-        this.at = function (index) {
-            if (typeof index != 'undefined' && this.count() > 0) {
-                if (index >= 0) {
-                    return this.treeDom[index];
+        this.currentNode = function () {
+            return this.get( this.pointerTreeDom);
+        };
+
+        this.cloneCurrentNode = function () {
+            return this.currentNode().cloneNode(true);
+        };
+
+        this.get = function (index) {
+            if (this.count() > 0) {
+                if (typeof index != 'undefined') {
+                    if (index >= 0) {
+                        return this.treeDom[index];
+                    }
+                    else {
+                        return this.treeDom[this.count() + index];
+                    }
                 }
-                else {
-                    return this.treeDom[this.count() + index];
-                }
+                return undefined;
             }
             return null;
         };
 
         this.eq = function (index) {
-            return new jVObject(this.at(index));
+            return new jVObject( this.get(index) );
         };
 
         this.first = function () {
@@ -92,13 +124,13 @@ if (!window.requestAnimationFrame) {
 
         this.each = function (callback) {
             for (var i = 0; i < this.count(); ++i) {
-                callback(this.at(i), i);
+                callback(this.get(i), i, this.treeDom);
             }
         };
 
         this.call = function (callback) {
             for (var i = 0; i < this.count(); ++i) {
-                callback(this.eq(i), i);
+                callback(this.eq(i), i, this.treeDom);
             }
         };
 
@@ -117,9 +149,11 @@ if (!window.requestAnimationFrame) {
                 }
                 return this;
             }
-            if (this.count() == 1) {
-                return this.at(0).innerText;
+            var currentNode = this.currentNode();
+            if (typeof currentNode != 'undefined') {
+                return currentNode.innerText;
             }
+            return undefined;
         };
 
         this.html = function (html) {
@@ -137,48 +171,97 @@ if (!window.requestAnimationFrame) {
                 }
                 return this;
             }
-            if (this.count() == 1) {
-                return this.at(0).innerHTML;
+            var currentNode = this.currentNode();
+            if (typeof currentNode != 'undefined') {
+                return currentNode.innerHTML;
             }
-            return null;
+            return undefined;
+        };
+
+        this.parent = function () {
+            var currentNode = this.currentNode();
+            if (typeof currentNode != 'undefined') {
+                dom = currentNode.parentNode;
+                if (dom != null) {
+                    return new jVObject(dom);
+                }
+            }
+            return undefined;
+        };
+
+        this.prev = function () {
+            var currentNode = this.currentNode();
+            if (typeof currentNode != 'undefined') {
+                dom = currentNode.previousElementSibling;
+                if (dom != null) {
+                    return new jVObject(dom);
+                }
+            }
+            return undefined;
+        };
+
+        this.next = function () {
+            var currentNode = this.currentNode();
+            if (typeof currentNode != 'undefined') {
+                dom = currentNode.nextElementSibling;
+                if (dom != null) {
+                    return new jVObject(dom);
+                }
+            }
+            return undefined;
+        };
+
+        this.remove = function () {
+            this.each(function (node) {
+                node.parentNode.removeChild(node);
+            });
+            return undefined;
         };
 
         this.append = function (html) {
-            return this.html(this.html() + html);
+            var currentNode = this.currentNode();
+            if (typeof currentNode != 'undefined') {
+                currentNode = currentNode.appendChild(html.htmlToDom());
+                return this;
+            }
+            return undefined;
         };
 
         this.outerHtml = function () {
-            if (this.count() == 1) {
-                return this.at(0).outerHTML;
+            var currentNode = this.currentNode();
+            if (typeof currentNode != 'undefined') {
+                return currentNode.outerHTML;
             }
-            return null;
+            return undefined;
         };
 
         this.attr = function (type, value) {
-            if (this.count() == 1) {
+            var currentNode = this.currentNode();
+            if (typeof currentNode != 'undefined') {
                 if (typeof value == 'undefined') {
-                    if (!this.at(0).hasAttribute(type)) {
+                    if (!currentNode.hasAttribute(type)) {
                         return null;
                     }
-                    return this.at(0).getAttribute(type);
+                    return currentNode.getAttribute(type);
                 }
-                else if (value == null) {
-                    this.at(0).removeAttribute(type);
+                else if (value == '') {
+                    currentNode.removeAttribute(type);
                 }
                 else {
-                    this.at(0).setAttribute(type, value);
+                    currentNode.setAttribute(type, value);
                 }
                 return this;
             }
             this.each(function (node) {
                 node.setAttribute(type, value);
             });
-            return null;
+            return undefined;
         };
 
         this.css = function (type, value) {
-            if (typeof value == 'undefined' && this.count() == 1) {
-                return this.at(0).style.getPropertyValue(type);
+            var currentNode = this.currentNode();
+            if (typeof currentNode != 'undefined' && typeof value == 'undefined') {
+                return currentNode.style.getPropertyValue(type);
             }
             this.each(function (node) {
                 node.style.setProperty(type, value);
@@ -187,17 +270,19 @@ if (!window.requestAnimationFrame) {
         };
 
         this.width = function () {
-            if (this.count() == 1) {
-                return this.at(0).clientWidth;
+            var currentNode = this.currentNode();
+            if (typeof currentNode != 'undefined') {
+                return currentNode.clientWidth;
             }
-            return null;
+            return undefined;
         };
 
         this.height = function () {
-            if (this.count() == 1) {
-                return this.at(0).clientHeight;
+            var currentNode = this.currentNode();
+            if (typeof currentNode != 'undefined') {
+                return currentNode.clientHeight;
             }
-            return null;
+            return undefined;
         };
 
         this.toggleClass = function (className) {
@@ -208,10 +293,11 @@ if (!window.requestAnimationFrame) {
         };
 
         this.hasClass = function (className) {
-            if (this.count() == 1) {
-                return this.at(0).classList.contains(className);
+            var currentNode = this.currentNode();
+            if (typeof currentNode != 'undefined') {
+                return currentNode.classList.contains(className);
             }
-            return null;
+            return undefined;
         };
 
         this.addClass = function (className) {
@@ -233,17 +319,10 @@ if (!window.requestAnimationFrame) {
             this.each(function (node) {
                 list.push(node.querySelectorAll(selector));
             });
-
-            var newObject = new jVObject();
             if (list.length == 1) {
-                // todo
-                newObject.setTreeDom(list[0]);
+                return new jVObject(list[0]);
             }
-            else {
-                // todo
-                newObject.setTreeDom(list);
-            }
-            return newObject;
+            return new jVObject(list);
         };
 
         this.animate = function (event, duration, complite) {
@@ -291,23 +370,19 @@ if (!window.requestAnimationFrame) {
 
         this.major = 0;
         this.minor = 0;
-        this.maintenance = 4;
+        this.maintenance = 6;
 
         this.version = function () {
             return this.major + '.' + this.minor + '.' + this.maintenance;
         };
 
-        this.ready = function (callback) {
-            window.addEventListener("DOMContentLoaded", callback);
+        this.call = function (type, callback) {
+            window.addEventListener(type, callback);
             return this;
         };
 
-        this.loader = function (src) {
-            var script = document.createElement("script");
-            script.src = src;
-            var doc = document.head || document.getElementsByTagName("head")[0];
-            doc.appendChild(script);
-            return this;
+        this.ready = function (callback) {
+            return this.call("DOMContentLoaded", callback);
         };
 
         this.get = function (selector) {
