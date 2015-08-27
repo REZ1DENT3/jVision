@@ -9,7 +9,7 @@
             background: #000;
         }
     </style>
-    <script type="text/javascript" src="src/jvision.js"></script>
+    <script type="text/javascript" src="src/jvision.min.js"></script>
     <script type="text/javascript">
 
         function generateColor() {
@@ -39,7 +39,7 @@
             var jBody = jHTML.find('body');
             jBody.html('<h1 id="hello-world">Hello jVision!</h1>');
 
-            jBody.find('h1').addClass('hello');
+            var jH1 = jBody.find('h1').addClass('hello');
 
             for (i = 2; i < 7; ++i) {
                 jBody
@@ -65,6 +65,8 @@
                 }
                 jLi.css('color', generateColor());
             }
+
+            jH1.attr('id', '');
 
         });
 
