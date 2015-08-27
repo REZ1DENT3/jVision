@@ -376,18 +376,13 @@ if (!window.requestAnimationFrame) {
             return this.major + '.' + this.minor + '.' + this.maintenance;
         };
 
-        this.ready = function (callback) {
-            window.addEventListener("DOMContentLoaded", callback);
+        this.call = function (type, callback) {
+            window.addEventListener(type, callback);
             return this;
         };
 
-        this.loader = function (src) {
-            var script = document.createElement("script");
-            script.src = src;
-            script.type = "text/javascript";
-            var doc = document.head || document.getElementsByTagName("head")[0];
-            doc.appendChild(script);
-            return this;
+        this.ready = function (callback) {
+            return this.call("DOMContentLoaded", callback);
         };
 
         this.get = function (selector) {
