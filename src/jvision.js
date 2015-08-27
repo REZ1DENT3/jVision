@@ -33,41 +33,45 @@ if (!window.requestAnimationFrame) {
 
 }
 
-var jVision = window.jVision = new (function () {
+if (typeof jVision == 'undefined') {
 
-    this._version = ['###vision-js-maker~#~#major#~#~', '###vision-js-maker~#~#minor#~#~', '###vision-js-maker~#~#maintenance#~#~', '###vision-js-maker~#~#build#~#~'];
+    var jVision = window.jVision = new (function () {
 
-    this.major = function () {
-        return this._version[0];
-    };
+        this._version = ['###vision-js-maker~#~#major#~#~', '###vision-js-maker~#~#minor#~#~', '###vision-js-maker~#~#maintenance#~#~', '###vision-js-maker~#~#build#~#~'];
 
-    this.minor = function () {
-        return this._version[1];
-    };
+        this.major = function () {
+            return this._version[0];
+        };
 
-    this.maintenance = function () {
-        return this._version[2];
-    };
+        this.minor = function () {
+            return this._version[1];
+        };
 
-    this.build = function () {
-        return this._version[3];
-    };
+        this.maintenance = function () {
+            return this._version[2];
+        };
 
-    this.version = function () {
-        return this._version.join('.');
-    };
+        this.build = function () {
+            return this._version[3];
+        };
 
-    this.call = function (type, callback) {
-        window.addEventListener(type, callback);
-        return this;
-    };
+        this.version = function () {
+            return this._version.join('.');
+        };
 
-    this.ready = function (callback) {
-        return this.call("DOMContentLoaded", callback);
-    };
+        this.call = function (type, callback) {
+            window.addEventListener(type, callback);
+            return this;
+        };
 
-    this.get = function (selector) {
-        return new jVObject(selector);
-    };
+        this.ready = function (callback) {
+            return this.call("DOMContentLoaded", callback);
+        };
 
-});
+        this.get = function (selector) {
+            return new jVObject(selector);
+        };
+
+    });
+
+}
