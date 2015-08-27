@@ -35,19 +35,18 @@
             jBody.find('h1').addClass('hello');
 
             for (i = 2; i < 7; ++i) {
-                console.log(
                 jBody
                     .append('<h' + i + '></h' + i + '>')
                     .find('h' + i)
                     .css('font-size', (50 / i) + 'px')
                     .css('color', generateColor())
-                    .text(jVision.version())
-                )
+                    .text(jVision.version());
             }
 
             jBody.append('<ul></ul>');
 
             var jUl = jBody.find('ul');
+
             var jLi = null;
             for (i = 1; i <= 10; ++i) {
                 jUl.append('<li>' + i + '</li>');
@@ -57,7 +56,6 @@
                 else {
                     jLi = jLi.next();
                 }
-                console.log(jLi);
                 jLi.css('color', generateColor());
             }
 

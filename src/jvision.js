@@ -5,17 +5,14 @@ if (typeof String.prototype.trim == 'undefined') {
 }
 
 if (typeof String.prototype.htmlToDom == 'undefined') {
-    String.prototype.htmlToDom = function () { // todo: crutch ....
-        var frame = document.createElement('iframe');
-        frame.style.display = 'none';
-        document.body.appendChild(frame);
-        frame.contentDocument.open();
-        frame.contentDocument.write(this);
-        frame.contentDocument.close();
-        var el = frame.contentDocument.body.firstChild;
-        document.body.removeChild(frame);
-        return el;
-    }
+    String.prototype.htmlToDom = function () {
+        parser = new DOMParser();
+        doc = parser.parseFromString(this, "text/html");
+        if (typeof doc.body.firstChild != 'undefined') {
+            return doc.body.firstChild;
+        }
+        return undefined;
+    };
 }
 
 if (!window.requestAnimationFrame) {
@@ -91,7 +88,7 @@ if (!window.requestAnimationFrame) {
         };
 
         this.currentNode = function () {
-            return this.at(this.pointerTreeDom);
+            return this.at( this.pointerTreeDom);
         };
 
         this.cloneCurrentNode = function () {
@@ -114,7 +111,7 @@ if (!window.requestAnimationFrame) {
         };
 
         this.eq = function (index) {
-            return new jVObject(this.at(index));
+            return new jVObject( this.at(index) );
         };
 
         this.first = function () {
