@@ -368,12 +368,22 @@ if (!window.requestAnimationFrame) {
 
     var jVision = window.jVision = new (function () {
 
-        this.major = 0;
-        this.minor = 0;
-        this.maintenance = 6;
+        this._version = [0, 0, 7];
+
+        this.major = function() {
+            return this._version[0];
+        };
+
+        this.minor = function() {
+            return this._version[1];
+        };
+
+        this.maintenance = function() {
+            return this._version[2];
+        };
 
         this.version = function () {
-            return this.major + '.' + this.minor + '.' + this.maintenance;
+            return this._version.join('.');
         };
 
         this.call = function (type, callback) {
