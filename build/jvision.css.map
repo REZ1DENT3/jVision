@@ -1,0 +1,7 @@
+{
+"version": 3,
+"mappings": ";EAGE,WAAW,EAAE,QAAQ;EACrB,GAAG,EAAE,kCAAkC;;EAGvC,WAAW,EAAE,SAAS;EACtB,GAAG,EAAE,mCAAmC;;EAGxC,WAAW,EAAE,UAAU;EACvB,GAAG,EAAE,oCAAoC;;EAGzC,WAAW,EAAE,WAAW;EACxB,GAAG,EAAE,qCAAqC;AAE5C,IAAI;EACF,WAAW,EAAE,WAAW",
+"sources": ["jvision.sass"],
+"names": [],
+"file": "jvision.css"
+}

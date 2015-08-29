@@ -1,13 +1,16 @@
-Array.prototype.shuffle = function () {
-    var get = function (index) {
-        return Math.floor(Math.random() * index);
+if (typeof Array.prototype.shuffle == 'undefined') {
+    Array.prototype.shuffle = function () {
+        var get = function (index) {
+            return Math.floor(Math.random() * index);
+        };
+        for (var i = this.length, j, x; i;) {
+            j = get(i--);
+            this[j] = [this[i], this[i] = this[j]][0];
+        }
+        return this;
     };
-    for (var i = this.length, j, x; i;) {
-        j = get(i--);
-        this[j] = [this[i], this[i] = this[j]][0];
-    }
-    return this;
-};
+}
+
 
 if (typeof String.prototype.trim == 'undefined') {
     String.prototype.trim = function () {
@@ -28,7 +31,7 @@ if (typeof String.prototype.toDom == 'undefined') {
 
 var jVision = window.jVision = new (function () {
 
-    this._version = [0, 0, 7, 50];
+    this._version = [0, 0, 7, 52];
 
     this.major = function () {
         return this._version[0];
