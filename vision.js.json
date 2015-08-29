@@ -3,23 +3,25 @@
         "major": 0,
         "minor": 0,
         "maintenance": 7,
-        "build": 31
+        "build": 50
     },
     "in": "src\/",
     "source": {
         "core": "jvision.js",
         "jvobject": "jvobject.js",
-        "jvdynamic": "jvdynamic.js"
+        "jvdynamic": "jvdynamic.js",
+        "array": "array.js",
+        "string": "string.js",
+        "window": "window.js"
     },
     "out": "build\/",
     "build": {
         "jvision.js": [
+            "array",
+            "string",
             "core",
-            "jvobject"
-        ],
-        "jvobject.animation.js": [
             "jvobject",
-            "jvdynamic"
+            "window"
         ]
     }
 }
