@@ -1,11 +1,22 @@
+Array.prototype.shuffle = function () {
+    var get = function (index) {
+        return Math.floor(Math.random() * index);
+    };
+    for (var i = this.length, j, x; i;) {
+        j = get(i--);
+        this[j] = [this[i], this[i] = this[j]][0];
+    }
+    return this;
+};
+
 if (typeof String.prototype.trim == 'undefined') {
     String.prototype.trim = function () {
         return this.replace(/^[\s\uFEFF\xA0]+|[\s\uFEFF\xA0]+$/g, '');
     };
 }
 
-if (typeof String.prototype.htmlToDom == 'undefined') {
-    String.prototype.htmlToDom = function () {
+if (typeof String.prototype.toDom == 'undefined') {
+    String.prototype.toDom = function () {
         parser = new DOMParser();
         doc = parser.parseFromString(this, "text/html");
         if (typeof doc.body.firstChild != 'undefined') {
@@ -15,27 +26,9 @@ if (typeof String.prototype.htmlToDom == 'undefined') {
     };
 }
 
-if (!window.requestAnimationFrame) {
-
-    window.requestAnimationFrame = (function () {
-
-        return window.webkitRequestAnimationFrame ||
-            window.mozRequestAnimationFrame ||
-            window.oRequestAnimationFrame ||
-            window.msRequestAnimationFrame ||
-            function (callback, element) {
-
-                window.setTimeout(callback, 1000 / 60);
-
-            };
-
-    })();
-
-}
-
 var jVision = window.jVision = new (function () {
 
-    this._version = [0, 0, 7, 30];
+    this._version = [0, 0, 7, 50];
 
     this.major = function () {
         return this._version[0];
@@ -72,6 +65,19 @@ var jVision = window.jVision = new (function () {
 
 });
 
+if (!window.requestAnimationFrame) {
+    window.requestAnimationFrame = (function () {
+        return window.webkitRequestAnimationFrame ||
+            window.mozRequestAnimationFrame ||
+            window.oRequestAnimationFrame ||
+            window.msRequestAnimationFrame ||
+            function (callback, element) {
+
+                window.setTimeout(callback, 1000 / 60);
+
+            };
+    })();
+}
 
 var jVObject = function (selector) {
 
@@ -259,7 +265,7 @@ var jVObject = function (selector) {
     this.append = function (html) {
         var currentNode = this.currentNode();
         if (typeof currentNode != 'undefined') {
-            currentNode = currentNode.appendChild(html.htmlToDom());
+            currentNode = currentNode.appendChild(html.toDom());
             return this;
         }
         return undefined;
@@ -402,4 +408,13 @@ var jVObject = function (selector) {
         return this;
     };
 
+};
+
+window.$ = function (selector) {
+    switch (typeof selector) {
+        case 'function':
+            return jVision.ready(selector);
+        default:
+            return jVision.get(selector);
+    }
 };

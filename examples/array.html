@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Array Examples</title>
+        <script type="text/javascript" src="../build/jvision.js"></script>
+        <script type="text/javascript">
+            $(function () {
+                var myArray = [
+                    1, 2, 3
+                ];
+                myArray.shuffle();
+                $jBody = $('body').append('<div></div>').html('Shufflle:<ul></ul>');
+                $jUl = $jBody.find('ul');
+                for (var i = 0; i < myArray.length; ++i) {
+                    $jUl.append('<li></li>').find('li').last().text(myArray[i]);
+                }
+            });
+        </script>
+    </head>
+    <body>
+
+    </body>
+</html>

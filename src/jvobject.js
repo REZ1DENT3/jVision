@@ -1,3 +1,17 @@
+if (!window.requestAnimationFrame) {
+    window.requestAnimationFrame = (function () {
+        return window.webkitRequestAnimationFrame ||
+            window.mozRequestAnimationFrame ||
+            window.oRequestAnimationFrame ||
+            window.msRequestAnimationFrame ||
+            function (callback, element) {
+
+                window.setTimeout(callback, 1000 / 60);
+
+            };
+    })();
+}
+
 var jVObject = function (selector) {
 
     this.treeDom = [];
@@ -184,7 +198,7 @@ var jVObject = function (selector) {
     this.append = function (html) {
         var currentNode = this.currentNode();
         if (typeof currentNode != 'undefined') {
-            currentNode = currentNode.appendChild(html.htmlToDom());
+            currentNode = currentNode.appendChild(html.toDom());
             return this;
         }
         return undefined;

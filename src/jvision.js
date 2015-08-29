@@ -1,38 +1,3 @@
-if (typeof String.prototype.trim == 'undefined') {
-    String.prototype.trim = function () {
-        return this.replace(/^[\s\uFEFF\xA0]+|[\s\uFEFF\xA0]+$/g, '');
-    };
-}
-
-if (typeof String.prototype.htmlToDom == 'undefined') {
-    String.prototype.htmlToDom = function () {
-        parser = new DOMParser();
-        doc = parser.parseFromString(this, "text/html");
-        if (typeof doc.body.firstChild != 'undefined') {
-            return doc.body.firstChild;
-        }
-        return undefined;
-    };
-}
-
-if (!window.requestAnimationFrame) {
-
-    window.requestAnimationFrame = (function () {
-
-        return window.webkitRequestAnimationFrame ||
-            window.mozRequestAnimationFrame ||
-            window.oRequestAnimationFrame ||
-            window.msRequestAnimationFrame ||
-            function (callback, element) {
-
-                window.setTimeout(callback, 1000 / 60);
-
-            };
-
-    })();
-
-}
-
 var jVision = window.jVision = new (function () {
 
     this._version = ['###vision-js-maker~#~#major#~#~', '###vision-js-maker~#~#minor#~#~', '###vision-js-maker~#~#maintenance#~#~', '###vision-js-maker~#~#build#~#~'];
