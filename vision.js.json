@@ -5,7 +5,7 @@
         "maintenance": 7,
         "build": 52
     },
-    "in": "src\/",
+    "in": "src\/js\/",
     "source": {
         "core": "jvision.js",
         "jvobject": "jvobject.js",
