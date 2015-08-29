@@ -3,13 +3,12 @@
         "major": 0,
         "minor": 0,
         "maintenance": 7,
-        "build": 50
+        "build": 52
     },
     "in": "src\/",
     "source": {
         "core": "jvision.js",
         "jvobject": "jvobject.js",
-        "jvdynamic": "jvdynamic.js",
         "array": "array.js",
         "string": "string.js",
         "window": "window.js"
